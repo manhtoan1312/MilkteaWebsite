@@ -93,7 +93,6 @@ async function deleteMilkteaInCart(mteaId){
 
 async function updateMilkteaInCart(mtea){
   try {
-    console.log('hi')
     const role = getRole();
     const response = await fetch(
       `${api}/my-cart/update/${mtea.custom_milk_tea_id}`,
@@ -103,7 +102,7 @@ async function updateMilkteaInCart(mtea){
           "Content-type": "application/json",
           authorization: role?.token ? `Bearer ${role.token}` : "",
         },
-        body: mtea
+        body: JSON.stringify(mtea)
       }
     );
     if (response.status === 200) {

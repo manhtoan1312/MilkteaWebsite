@@ -5,10 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Price from "./Price";
-import {
-  deleteMilkteaInCart,
-  updateMilkteaInCart,
-} from "../API/customer/cart";
+import { deleteMilkteaInCart, updateMilkteaInCart } from "../API/customer/cart";
 function CartTable({ cart }) {
   const [orders, setOrders] = useState(cart);
   const [Subtotal, setSubtotal] = useState(0);
@@ -34,32 +31,38 @@ function CartTable({ cart }) {
     const result = names.join(", ");
     return result;
   }
-  function GetNewOrder(orders, event, item) {
-    const updatedOrders = orders.map((order) => {
-      if (order.custom_milk_tea_id === item.custom_milk_tea_id) {
-        return {
-          ...order,
-          quantity: event.target.value,
-        };
-      }
-      return order;
-    });
-    const existingItem = updatedOrders.find(
+
+  function handleOrdersChange(event, item) {
+    const existingItem = updateList.find(
       (order) => order.custom_milk_tea_id === item.custom_milk_tea_id
     );
-    if (!existingItem) {
-      updatedOrders.push({
-        ...item,
-        quantity: event.target.value,
-      });
+  
+    if (existingItem) {
+      setUpdateList((prevUpdateList) =>
+        prevUpdateList.map((order) =>
+          order.custom_milk_tea_id === item.custom_milk_tea_id
+            ? { ...order, quantity: event.target.value }
+            : order
+        )
+      );
+    } else {
+      setUpdateList((prevUpdateList) => [
+        ...prevUpdateList,
+        { ...item, quantity: event.target.value },
+      ]);
     }
-
-    return updatedOrders;
-  }
-  function handleOrdersChange(event, item) {
-    setUpdateList(GetNewOrder(updateList, event, item));
-
-    setOrders(GetNewOrder(orders, event, item));
+  
+    setOrders(
+      orders.map((order) => {
+        if (order.custom_milk_tea_id === item.custom_milk_tea_id) {
+          return {
+            ...order,
+            quantity: event.target.value,
+          };
+        }
+        return order;
+      })
+    );
   }
 
   function removeItem(event, item) {
@@ -70,11 +73,11 @@ function CartTable({ cart }) {
     const updatedOrders = orders.filter(
       (order) => order.custom_milk_tea_id !== item.custom_milk_tea_id
     );
-    const newupdate = updateList.filter(
-      (idmTea) => idmTea !== item.custom_milk_tea_id
+    const newupdatedlists = updateList.filter(
+      (order) => order.custom_milk_tea_id !== item.custom_milk_tea_id
     );
-    setUpdateList(newupdate);
     setOrders(updatedOrders);
+    setUpdateList(newupdatedlists);
   }
 
   function DeleteItem() {
@@ -89,23 +92,21 @@ function CartTable({ cart }) {
     }
     return true;
   }
-  function updateItem() {
+  async function updateItem() {
     if (updateList.length > 0) {
-      updateList.forEach((item) => {
-        const fetchData = async () => {
-          const result = await updateMilkteaInCart(item);
-          if (!result.success) {
-            return false;
-          }
-        };
-        fetchData();
-      });
+      // Sử dụng Promise.all để chờ cho tất cả các tác vụ update hoàn thành
+      const updatePromises = updateList.map((item) =>
+        updateMilkteaInCart(item)
+      );
+      const results = await Promise.all(updatePromises);
+      // Kiểm tra kết quả của tất cả các tác vụ update
+      console.log(results)
+      return results.every((result) => result.success);
     }
-    return true;
+    return true; // Trả về true nếu không có tác vụ update nào
   }
   function updateCart(e) {
-    const deleteResult = DeleteItem();
-    console.log(updateList)
+    DeleteItem();
     const updateResult = updateItem();
     if (!updateResult) alert(" Milktea Error!!!");
   }
@@ -165,7 +166,7 @@ function CartTable({ cart }) {
               <td className="font-primary text-base font-light px-4 sm:px-6 py-4 hidden sm:table-cell">
                 <Price
                   currency="VND"
-                  num={item.total_price}
+                  num={item?.total_price}
                   numSize="text-lg"
                 />
               </td>
