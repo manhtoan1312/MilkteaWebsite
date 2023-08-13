@@ -36,6 +36,7 @@ public class CustomMilkTeaService {
 		updateCustomMilkTea.setSize(customMilkTea.getSize());
 		updateCustomMilkTea.setIce_amount(customMilkTea.getIce_amount());
 		updateCustomMilkTea.setSugar_amount(customMilkTea.getSugar_amount());
+		updateCustomMilkTea.setQuantity(customMilkTea.getQuantity());
 		customMilkTeaRepository.save(updateCustomMilkTea);
 		return "Update successfully";
 	}
