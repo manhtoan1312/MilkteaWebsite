@@ -8,6 +8,7 @@ import Profile from '~/component/pages/customer/profile'
 import ChangePasswordPage from '~/component/pages/customer/ChangePasswordPage'
 import Cart from '~/component/pages/customer/cart'
 import OrderPage from '~/component/pages/customer/Order'
+import OrdersOrdered from '~/component/pages/customer/OrdersOrdered'
 const publicRoutes = [
     {path: '/', component: Home},
     {path: '/menu', component: Menu},
@@ -19,6 +20,7 @@ const publicRoutes = [
     {path: '/profile', component: Profile},
     {path: '/customer/cart', component: Cart},
     {path: '/customer/order', component: OrderPage},
+    {path:'/ordernotincart', component: OrdersOrdered},
     {path: '/changepassword', component: ChangePasswordPage, layout:null},
     {path: '/login', component: Login, layout: null},
     {path:'/register', component: Register, layout: null},

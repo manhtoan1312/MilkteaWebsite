@@ -4,6 +4,7 @@ import {
   updataAccountInfo,
 } from "~/component/API/customer/profile";
 import { useNavigate } from "react-router-dom";
+import MessageBox from "~/component/items/MessageBox";
 export default function Profile() {
   const [errorMessage, setErrorMessage] = useState("");
   const [infor, setInfor] = useState({});
@@ -15,13 +16,13 @@ export default function Profile() {
       else setInfor(data.message);
     };
 
-    if (errorMessage) {
-      setTimeout(() => {
-        alert(errorMessage);
-        history("/login");
-        localStorage.clear();
-      }, 3000);
-    }
+    // if (errorMessage) {
+    //   setTimeout(() => {
+    //     alert(errorMessage);
+    //     history("/login");
+    //     localStorage.clear();
+    //   }, 3000);
+    //}
 
     fetchData();
   }, []);
@@ -29,8 +30,8 @@ export default function Profile() {
   async function handleChangeInfo(e) {
     e.preventDefault();
     const resuilt = await updataAccountInfo(infor);
-    if (resuilt.success) alert("Update Successfully");
-    else alert("Fail to Update");
+    if (resuilt.success) setErrorMessage("Update Information Successfully!!");
+    else setErrorMessage(resuilt.message);
   }
 
   function handleDataInfo(event) {
@@ -41,7 +42,8 @@ export default function Profile() {
     }));
   }
   return (
-    <div>
+    <div className="relative h-screen">
+      {errorMessage && <MessageBox message={errorMessage} />}
       {infor && (
         <form onSubmit={handleChangeInfo} className="px-[200px] py-[50px]">
           <h1 className="mb-4 text-[40px] text-green-700 font-medium leading-none grid justify-center  dark:text-white">

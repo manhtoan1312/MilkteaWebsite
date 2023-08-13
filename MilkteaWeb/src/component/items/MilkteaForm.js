@@ -215,7 +215,7 @@ function MilkteaForm({ MTea }) {
                           htmlFor={item.add_on_id}
                           className="ml-2 text-gray-700 dark:text-white cursor-pointer"
                         >
-                          {item.name} (+{item.price})
+                          {item.name} (+{item.price}VND)
                         </label>
                       </div>
                     </li>

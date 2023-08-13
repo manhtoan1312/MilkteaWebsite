@@ -1,6 +1,6 @@
 import { useState } from "react";
 import sendReport from "~/component/API/customer/report";
-
+import MessageBox from "~/component/items/MessageBox";
 export default function Report() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function Report() {
     setErrorMessage(resuilt.message);
   };
   return (
-    <div className="w-full h-[80vh] flex items-center justify-center">
+    <div className="w-full h-[80vh] flex items-center justify-center relative">
       <form
         onSubmit={handleSendReport}
         className="bg-white flex flex-col px-[4vw] py-[2vw] w-[90%] max-w-[600px] rounded-[10px]"
@@ -67,7 +67,7 @@ export default function Report() {
           placeholder="How can we help you?"
           value={message}
         ></textarea>
-        {errorMessage && <p className="text-green-400 py-1">{errorMessage}</p>}
+        {errorMessage && <MessageBox message={errorMessage}/>}
         <button
           type="submit"
           className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"

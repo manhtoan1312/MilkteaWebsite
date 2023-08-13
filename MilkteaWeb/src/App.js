@@ -6,7 +6,7 @@ import { DefaultLayout } from "~/component/pages/customer/Layout";
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App relative">
         <Routes>
           {publicRoutes.map((router, index) => {
             const Layout = router.layout === null ? Fragment : DefaultLayout;

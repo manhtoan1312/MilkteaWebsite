@@ -121,6 +121,19 @@ function Header() {
               <li>
                 {" "}
                 <Link
+                  to="/ordernotincart"
+                  className={
+                    activeButton === "ordernotincart" ? active : unactive
+                  }
+                >
+                  Ordered
+                </Link>
+              </li>
+            )}
+            {roleActor.role && (
+              <li>
+                {" "}
+                <Link
                   to="/profile"
                   className={activeButton === "/profile" ? active : unactive}
                 >
